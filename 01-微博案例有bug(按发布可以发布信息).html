@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>微博发布效果</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        list-style: none;
+      }
+
+      .weibo {
+        width: 600px;
+        border: 1px solid #ccc;
+
+        margin: 100px auto;
+        padding: 10px;
+      }
+
+      .weibo-text {
+        width: 590px;
+        height: 140px;
+        padding: 5px;
+        border: 1px solid #ccc;
+        outline: none;
+        resize: none;
+      }
+
+      .weibo-text:focus {
+        border-color: #f60;
+      }
+
+      .weibo-btn {
+        width: 80px;
+        height: 30px;
+        background-color: #f90;
+        color: #fff;
+        border: 0 none;
+        margin-top: 5px;
+        border-radius: 3px;
+        cursor: pointer;
+        outline: 0 none;
+      }
+
+      .weibo-list {
+        padding-top: 10px;
+      }
+
+      .weibo-list li {
+        font-size: 14px;
+        line-height: 30px;
+        border-bottom: 1px dotted #ccc;
+        overflow: hidden;
+      }
+
+      .weibo-list li p {
+        float: left;
+      }
+
+      .weibo-list li span {
+        float: right;
+        cursor: pointer;
+      }
+
+      .weibo-list li input {
+        height: 24px;
+        line-height: 24px;
+        width: 300px;
+        font-size: 14px;
+        border: 0 none;
+      }
+      .time {
+      margin-right: 10px;
+      font-style: normal;
+      float: right;
+    }
+    </style>
+  </head>
+
+  <body>
+    <div class="weibo">
+      <textarea class="weibo-text"></textarea>
+      <input class="weibo-btn" value="发布" type="button" />
+      <ul class="weibo-list">
+      </ul>
+    </div>
+  </body>
+</html>
+<script src="../kits.js"></script>
+<script>
+  /*
+  微博的效果：
+    1 点击发布，会创建一个新的li
+    2 点击删除，可以把某一条微博移除
+*/
+  /*
+  步骤：
+    1 获取元素
+    2 注册事件 - 点击
+    3 点击事件里面，
+      3.1 获取文本域的内容
+      3.2 创建个新的li，把文本域的内容作为li的内容
+      3.3 把新建的li放到ul的最前面
+      3.4 把文本域里面清空
+
+    4 点击删除
+        把点击的元素所对应的li移除 - removeChild
+        4.1 给所有的删除按钮，注册点击事件
+        4.2 找到删除按钮对应的li调用removeChild方法移除li
+
+    5 希望可以使用快捷键的方式实现发布
+        ctrol + 回车  发布
+        判断有没有按下ctrol+回车
+        5.1 给文本域注册键盘按下事件
+        5.2 判断按下的是否是回车+ctrol
+            如果满足条件，就发布
+*/
+  // 获取按钮和文本域和ul
+  // var btn = document.getElementsByClassName('weibo-btn');
+  var btn = document.querySelector(".weibo-btn");
+  var txt = document.querySelector(".weibo-text");
+  var list = document.querySelector(".weibo-list");
+  let data = localStorage.getItem("shuju");
+
+
+
+  // 注册事件
+  let arr = [];
+  if (data === null) {
+    arr = [];
+  } else {
+    arr = JSON.parse(data);
+  }
+
+
+
+
+
+  arr.forEach(function(e) {
+    // 创建一个新的li
+    var li = document.createElement("li");
+    let time = formatDate();
+    // 把文本域的内容作为li的新的内容
+    li.innerHTML =
+      '<p class="text">' +
+      e.text +
+      '</p><span data-id="' +
+      e.id +
+      '" class="del">删除</span><em class="time">' +
+      e.time +
+      "</em>";
+    //   list.appendChild(li);
+    // 想要的效果是把新建的元素，放到最前面
+    let first = list.children[0];
+    list.insertBefore(li, first);
+  });
+
+    btn.onclick = function() {
+    // 获取文本域的内容
+    var text = txt.value;
+    // 创建一个新的li
+    var li = document.createElement("li");
+    let time = formatDate();
+    // 添加id删除
+    let id = 0;
+    arr.forEach(function(e) {
+      if (id < e.id) {
+        id = e.id;
+      }
+    });
+    id++;
+
+    // 把文本域的内容作为li的新的内容
+    li.innerHTML ='<p class="content">' + text + '</p><span data-id="'+ id +'" class="del">删除</span><em class="time">' + time + '</em>';
+    //   list.appendChild(li);
+    // 想要的效果是把新建的元素，放到最前面
+    let first = list.children[0];
+    list.insertBefore(li, first);
+    // 把文本域里面的内容清空
+    txt.value = '';
+
+    // 把创建好的li，添加到结构中
+    //   存放数据
+
+    let obj = {
+      id: id,
+      text: text,
+      time: time
+    };
+    arr.push(obj);
+    //   console.log(arr);
+    // / 先把数组转换为json格式
+
+    let json = JSON.stringify(arr);
+    // console.log(json);
+    localStorage.setItem('shuju', json);
+  };
+
+
+
+
+
+
+
+  // 因为删除按钮其实有一部分是动态生成的，最好的方式是使用事件委托的方式实现
+  // 1 把事件注册在一个已经存在的前代元素身上 - 把事件注册在ul身上
+  list.addEventListener('click', function(e) {
+    // 2 当事件被触发的时候，判断一下，事件目标是否是一个指定的元素，如果是，才执行
+    // 我们的要求是委托span的点击事件 ，判断点击的是否是span
+    // console.log(e.target.nodeName);
+    if (e.target.classList.contains('del')) {
+      // 如果满足条件，就把span对应的li删除
+
+      list.removeChild(e.target.parentNode);
+
+      // 点击的是不仅仅要li删除，还要把本地的数据删除
+      
+      let id = e.target.dataset.id;
+      arr.forEach(function(e, i) {
+        if (e.id == id) {
+          arr.splice(i, 1);
+        }
+      });
+      let json = JSON.stringify(arr);
+      localStorage.setItem('shuju', json);
+    }
+  })
+
+
+
+
+
+
+  // 事件按键发布
+  // 给文本域注册了键盘事件
+  txt.onkeydown = function(e) {
+    // 判断是否同时按下了ctrl以及回车
+    // console.log(e);
+    // 如果按下了ctrl，事件对象的一个属性    事件对象.ctrlKey  就是true
+    if (e.ctrlKey && e.keyCode === 13) {
+      // 此时就要发布微博
+      btn.onclick(); // 直接使用代码触发点击事件
+    }
+  };
+</script>
