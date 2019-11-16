@@ -1,0 +1,105 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    .box {
+      width: 450px;
+      height: 450px;
+      border: 1px solid #aaa;
+      position: relative;
+      top: 100px;
+      left: 100px;
+    }
+
+    .small {
+      width: 450px;
+      height: 450px;
+      position: absolute;
+    }
+
+    .mask {
+      position: absolute;
+      background-color: rgba(255, 255, 0, .3);
+      width: 225px;
+      height: 225px;
+      top: 0;
+      left: 0;
+      display: none;
+    }
+
+    .big {
+      width: 450px;
+      height: 450px;
+      border: 1px solid #aaa;
+      position: absolute;
+      left: 500px;
+      top: 0;
+      overflow: hidden;
+      display: none;
+    }
+
+    .big>img {
+      width: 900px;
+      height: 900px;
+      position: absolute;
+    }
+  </style>
+</head>
+
+<body>
+  <div class="box">
+    <div class="small">
+      <img src="./images/s.jpg" alt="">
+      <div class="mask"></div>
+    </div>
+    <div class="big">
+      <img src="./images/big.jpg" alt="">
+    </div>
+  </div>
+</body>
+<script>
+
+//   1.先把html和css代码复制好 -->
+//   效果：
+//  1. 鼠标移入小图
+//    - 大图容器会显示
+//    - 黄色的遮罩会显示
+//  2. 鼠标移出小图
+//    - 大图容器和黄色遮罩都会隐藏
+//  3. 鼠标在小图上面移动
+//    - 黄色遮罩跟着移动
+//    - 大图也跟着移动
+// 步骤：
+//  一个一个的效果实现 
+// 鼠标移入和移出
+// 获取小图片，大图片和黄色遮罩
+let small=document.querySelector('.small');
+let big=document.querySelector('.big');
+let mask=document.querySelector('.mask');
+// 注册鼠标移入效果
+small.onmouseover=function(){
+    // 鼠标移入就显示大图片和黄色遮罩
+    big.style.display='block';
+    mask.style.display='block';
+}
+small.onmouseout=function(){
+    // 鼠标移入就显示大图片和黄色遮罩
+    big.style.display='none';
+    mask.style.display='none';
+}
+
+</script>
+</html>

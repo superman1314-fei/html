@@ -87,7 +87,7 @@
     </div>
   </body>
 </html>
-<script src="../kits.js"></script>
+<script src="./kits.js"></script>
 <script>
   /*
   微博的效果：
@@ -126,12 +126,18 @@
 
 
   // 注册事件
-  let arr = [];
-  if (data === null) {
-    arr = [];
-  } else {
-    arr = JSON.parse(data);
-  }
+  // let arr = [];
+  // if (data === null) {
+  //   arr = [];
+  // } else {
+  //   arr = JSON.parse(data);
+  // }
+ // 中级版本
+ let arr = !data ? [] : JSON.parse(data);
+
+/* 给arr赋值的高级版本 */
+
+// let arr = JSON.parse(data) || [];
 
 
 
