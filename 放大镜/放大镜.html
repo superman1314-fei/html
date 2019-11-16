@@ -1,105 +1,142 @@
-
-
-
 <!DOCTYPE html>
 <html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="ie=edge" />
+    <title>Document</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+      }
 
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta http-equiv="X-UA-Compatible" content="ie=edge">
-  <title>Document</title>
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-    }
+      .box {
+        width: 450px;
+        height: 450px;
+        border: 1px solid #aaa;
+        position: relative;
+        top: 100px;
+        left: 100px;
+      }
 
-    .box {
-      width: 450px;
-      height: 450px;
-      border: 1px solid #aaa;
-      position: relative;
-      top: 100px;
-      left: 100px;
-    }
+      .small {
+        width: 450px;
+        height: 450px;
+        position: absolute;
+      }
 
-    .small {
-      width: 450px;
-      height: 450px;
-      position: absolute;
-    }
+      .mask {
+        position: absolute;
+        background-color: rgba(255, 255, 0, 0.3);
+        width: 225px;
+        height: 225px;
+        top: 0;
+        left: 0;
+        display: none;
+      }
 
-    .mask {
-      position: absolute;
-      background-color: rgba(255, 255, 0, .3);
-      width: 225px;
-      height: 225px;
-      top: 0;
-      left: 0;
-      display: none;
-    }
+      .big {
+        width: 450px;
+        height: 450px;
+        border: 1px solid #aaa;
+        position: absolute;
+        left: 500px;
+        top: 0;
+        overflow: hidden;
+        display: none;
+      }
 
-    .big {
-      width: 450px;
-      height: 450px;
-      border: 1px solid #aaa;
-      position: absolute;
-      left: 500px;
-      top: 0;
-      overflow: hidden;
-      display: none;
-    }
+      .big > img {
+        width: 900px;
+        height: 900px;
+        position: absolute;
+      }
+    </style>
+  </head>
 
-    .big>img {
-      width: 900px;
-      height: 900px;
-      position: absolute;
-    }
-  </style>
-</head>
-
-<body>
-  <div class="box">
-    <div class="small">
-      <img src="./images/s.jpg" alt="">
-      <div class="mask"></div>
+  <body>
+    <div class="box">
+      <div class="small">
+        <img src="./images/s.jpg" alt="" />
+        <div class="mask"></div>
+      </div>
+      <div class="big">
+        <img src="./images/big.jpg" alt="" />
+      </div>
     </div>
-    <div class="big">
-      <img src="./images/big.jpg" alt="">
-    </div>
-  </div>
-</body>
-<script>
+  </body>
+  <script>
+    //   1.先把html和css代码复制好 -->
+    //   效果：
+    //  1. 鼠标移入小图
+    //    - 大图容器会显示
+    //    - 黄色的遮罩会显示
+    //  2. 鼠标移出小图
+    //    - 大图容器和黄色遮罩都会隐藏
+    //  3. 鼠标在小图上面移动
+    //    - 黄色遮罩跟着移动
+    //    - 大图也跟着移动
+    // 步骤：
+    //  一个一个的效果实现
+    // 鼠标移入和移出
+    // 获取小图片，大图片和黄色遮罩
+    // 小图
+    let small = document.querySelector(".small");
+    // 大图
+    let big = document.querySelector(".big");
+    // 黄色遮罩
+    let mask = document.querySelector(".mask");
+    let box = document.querySelector('.box');
+    let bigImg = document.querySelector(' .big > img')
+    // 注册鼠标移入效果
+    small.onmouseover = function() {
+      // 鼠标移入就显示大图片和黄色遮罩
+      big.style.display = "block";
+      mask.style.display = "block";
+    };
+    small.onmouseout = function() {
+      // 鼠标移入就显示大图片和黄色遮罩
+      big.style.display = "none";
+      mask.style.display = "none";
+    };
+    
+    // 实现遮罩跟着鼠标移动
+    small.onmousemove = function(e) {
+      let x = e.pageX;
+      let y = e.pageY;
+              // 又因为small和他的父元素box是重合的，所以可以使用box的位置代替它的位置
 
-//   1.先把html和css代码复制好 -->
-//   效果：
-//  1. 鼠标移入小图
-//    - 大图容器会显示
-//    - 黄色的遮罩会显示
-//  2. 鼠标移出小图
-//    - 大图容器和黄色遮罩都会隐藏
-//  3. 鼠标在小图上面移动
-//    - 黄色遮罩跟着移动
-//    - 大图也跟着移动
-// 步骤：
-//  一个一个的效果实现 
-// 鼠标移入和移出
-// 获取小图片，大图片和黄色遮罩
-let small=document.querySelector('.small');
-let big=document.querySelector('.big');
-let mask=document.querySelector('.mask');
-// 注册鼠标移入效果
-small.onmouseover=function(){
-    // 鼠标移入就显示大图片和黄色遮罩
-    big.style.display='block';
-    mask.style.display='block';
-}
-small.onmouseout=function(){
-    // 鼠标移入就显示大图片和黄色遮罩
-    big.style.display='none';
-    mask.style.display='none';
-}
-
-</script>
+        let smallOffsetLeft = box.offsetLeft;
+       let smallOffsetTop = box.offsetTop;
+      // 2.3 求出遮罩宽高的一半
+        let maskHalfWidth = mask.offsetWidth / 2;
+        let maskHalfHeight = mask.offsetHeight / 2;
+        // 2.4 根据公式计算出遮罩的位置
+         let left = x - smallOffsetLeft - maskHalfWidth;
+         let top = y - smallOffsetTop - maskHalfHeight;
+  // 2.6 限定遮罩的移动范围
+ 
+      left = left<=0? 0:left;
+      top = top <= 0 ? 0 : top;
+      // 2.7 限定最大移动范围
+       // 最大的移动范围 = small的宽高 - 遮罩的宽高
+       let maxLeft = small.offsetWidth - mask.offsetWidth;
+       let maxTop = small.offsetHeight - mask.offsetHeight;
+       left = left>= maxLeft?maxLeft:left;
+       top = top>= maxTop?maxTop:top;
+       mask.style.left = left+'px';
+       mask.style.top =top+'px'; 
+//        画图推导得出： 大图的当前位置 = 遮罩的当前位置 * 大图的最大移动距离 / 遮罩的最大位移
+//   */
+      // 遮罩的当前位置已知，遮罩的最大位移已知，还要求出 大图的最大移动距离
+      // 大图的最大移动距离 = 大图的宽高 - big盒子的宽高
+      let bigImgMaxLeft = bigImg.offsetWidth - big.offsetWidth;
+      let bigImgMaxTop = bigImg.offsetHeight-big.offsetHeight;
+      let bigImgLeft = left *bigImgMaxLeft / maxLeft;
+      let bigImgTop = top*bigImgMaxTop/maxTop;
+      bigImg.style.top = -bigImgTop + "px";
+      bigImg.style.left = -bigImgLeft + "px";
+    }
+  </script>
 </html>
