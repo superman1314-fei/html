@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+    }
+
+    header {
+      height: 100px;
+      background-color: red;
+    }
+
+    img {
+      width: 100%;
+      vertical-align: middle;
+    }
+
+    ul {
+      list-style: none;
+      display: flex;
+      width: 800%;
+    }
+
+    .move {
+      transition: transform 400ms linear;
+    }
+
+    li {
+      flex: 1;
+    }
+
+    .cour {
+      max-width: 760px;
+      overflow: hidden;
+    }
+  </style>
+</head>
+
+<body>
+  <header></header>
+  <main>
+    <div class="cour">
+      <ul class="move">
+        <li><a href="#"><img src="./images/6.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/1.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/2.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/3.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/4.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/5.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/6.jpg" alt=""></a></li>
+        <li><a href="#"><img src="./images/1.jpg" alt=""></a></li>
+      </ul>
+    </div>
+  </main>
+  <footer></footer>
+</body>
+<script src="./07-zepto.js"></script>
+<script src="./08-touch.js"></script>
+<script>
+    // 效果：
+    //   1.左滑动
+    //     让图片从n到n+1张
+    //   2.右划动
+    //     让图片从n到n-1张
+    // 获取ul元素
+  let ul =document.querySelector('ul');
+  // 记录当前第几张图片
+  let currentImgIndex = 1;
+  // 记录当前位置
+  let imgWidth = $('.cour').width();//这是zepto里面获取元素宽度的写法
+  // 获取ul的位置
+  // ul的位置 = 索引 * 图片宽度 * -1
+  let target = currentImgIndex*imgWidth*-1;
+  ul.style.transform = `translate(${target}px)`;
+  ul.classList.remove('move');
+  setTimeout(function(){
+    ul.classList.add('move');
+
+  },10);
+  // 获取ul,注册左滑动事件
+  $('ul').on('swipeLeft',function(){
+    currentImgIndex++;
+    // 算出ul位置
+    let target = currentImgIndex*imgWidth*-1;
+    ul.style.transform = `translate(${target}px)`;
+  });
+// 获取ul,注册右滑动事件
+  $('ul').on('swipeRight',function(){
+    currentImgIndex--;
+    let target = currentImgIndex*imgWidth*-1;
+    ul.style.transform = `translate(${target}px)`;
+  });
+  // 实现无缝滚动
+  ul.addEventListener('transitionend',function(){
+    console.log('结束');
+     // 判断 currentImgIndex 是否已经是最后一张
+     if(currentImgIndex ===ul.children.length-1){
+      currentImgIndex = 1;
+      let target = currentImgIndex*imgWidth*-1;
+    ul.style.transform = `translate(${target}px)`;
+    ul.classList.remove('move');
+    setTimeout(function(){
+      ul.classList.add('move');
+    },10);
+     }
+       //判断是否是右划动，画到了假的第6张
+  if(currentImgIndex===0){
+    currentImgIndex =ul.children.length-2;
+    let target = currentImgIndex*imgWidth*-1;
+    ul.style.transform = `translate(${target}px)`;
+    ul.classList.remove('move');
+    setTimeout(function(){
+      ul.classList.add('move');
+    },10);
+  }
+  })
+
+</script>
+
+</html>
