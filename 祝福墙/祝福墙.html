@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background: url("images/bg.gif");
+            font: 12px "simsun";
+        }
+
+        .content {
+            width: 960px;
+            height: 627px;
+            margin: 0 auto;
+            background: url("images/content_bg.jpg");
+        }
+
+        .clearfix {
+            *zoom: 1;
+        }
+
+        .clearfix:before, .clearfix:after {
+            content: '';
+            display: table;
+        }
+
+        .clearfix:after {
+            clear: both;
+        }
+
+        .tip {
+            width: 227px;
+            position: absolute;
+            top: 100px;
+            left: 200px;
+        }
+
+        .tip-h {
+            padding-top: 50px;
+            background: url("images/tip1_h.gif") no-repeat;
+            cursor: default;
+        }
+
+        .text {
+            float: left;
+            padding-left: 10px;
+        }
+
+        .close {
+            float: right;
+            margin-right: 10px;
+        }
+
+        .tip-m {
+            min-height: 40px;
+            padding: 0 10px;
+            padding-top: 10px;
+            background: url("images/tip1_c.gif");
+        }
+
+        .tip-f {
+            height: 53px;
+            background: url("images/tip1_f.gif");
+            padding-top: 20px;
+        }
+
+        .icon {
+            float: left;
+            padding-left: 10px;
+        }
+
+        .name {
+            float: right;
+            padding-right: 10px;
+        }
+    </style>
+</head>
+<body>
+<div class="content" id="content">
+    <div class="tip" id="tip">
+        <div class="tip-h clearfix" title="双击关闭纸条">
+            <div class="text">第[49568]条 2016-02-17 22:51:52</div>
+            <div class="close" title="关闭纸条">x</div>
+        </div>
+        <div class="tip-m">努力学习，高薪就业</div>
+        <div class="tip-f clearfix">
+            <div class="icon">
+                <img src="images/bpic_1.gif" alt=""/>
+            </div>
+            <div class="name">水货</div>
+        </div>
+    </div>
+</div>
+<script>
+      let messages = [
+            {"id": 1, "name": "mahu", "content": "今天你拿苹果支付了么", "time": "2016-02-17 00:00:00"},
+            {"id": 2, "name": "haha", "content": "今天天气不错，风和日丽的", "time": "2016-02-18 12:40:00"},
+            {"id": 3, "name": "jjjj", "content": "常要说的事儿是乐生于苦", "time": "2016-03-18 12:40:00"},
+            {"id": 4, "name": "9.8的妹纸", "content": "把朋友家厕所拉堵了 不敢出去 掏了半小时了都", "time": "2016-03-18 12:40:00"},
+            {"id": 5, "name": "雷锋ii.", "content": "元宵节快乐", "time": "2016-02-22 12:40:00"},
+            {
+                "id": 6,
+                "name": "哎呦哥哥.",
+                "content": "据说今晚央视的元宵晚会导演和春晚导演是同一个人，真是躲得过初一，躲不过十五。",
+                "time": "2016-02-22 01:30:00"
+            },
+            {
+                "id": 7,
+                "name": "没猴哥，不春晚",
+                "content": "班主任:“小明，你都十二岁了，还是三年级，不觉得羞愧吗”？。小明:“一点也不觉得，老师你都四十多岁了，不也是年年在三年级混日子吗？羞愧的应该是你”。老师:……",
+                "time": "2016-02-22 01:30:00"
+            },
+            {"id": 8, "name": "哎呦杰杰.", "content": "真搞不懂你们地球人，月亮有什么好看的，全是坑，还是对面那哥们好看，", "time": "2016-02-22 01:30:00"},
+            {"id": 9, "name": "哎呦哎呦", "content": "今天哪里的烟花最好看！！？答：朋友圈。。。", "time": "2016-02-22 02:30:00"}
+        ];
+  /*
+         *  功能：
+         *       1  动态的生成多张纸条
+         *       2  纸条的位置是随机的
+         *       3  点击纸条，别的纸条挡不住
+         *       4  点击关闭
+         *       5  双击关闭
+         * */
+        //  获取元素
+        let content = document.getElementById('content');
+                // 1 动态生成多个纸条
+        // 结构复杂，考虑使用innerHTML  元素.innerHTML = '标签格式的字符串'
+    let html = '';
+    for(let i = 0; i <messages.length;i++ ){
+        let obj = messages[i];
+          // 拼接字符串，最后生成结构
+    //       html +='<div class="tip" id="tip">'+
+    //     '<div class="tip-h clearfix" title="双击关闭纸条">'+
+    //        ' <div class="text">第[49568]条 2016-02-17 22:51:52</div>'+
+    //         '<div class="close" title="关闭纸条">x</div>'+
+    //     '</div>'+
+    //     '<div class="tip-m">努力学习，高薪就业</div>'+
+    //     '<div class="tip-f clearfix">'+
+    //        ' <div class="icon">'+
+    //             '<img src="images/bpic_1.gif" alt=""/>'+
+    //         '</div>'+
+    //         '<div class="name">水货</div>'+
+    //    ' </div>'+
+    // '</div>';
+    html +=`<div class="tip" id="tip"> 
+        <div class="tip-h clearfix" title="双击关闭纸条">
+            <div class="text">第[${49568+obj.id}]条 ${obj.time}</div>
+            <div class="close" title="关闭纸条">x</div>
+        </div>
+        <div class="tip-m">${obj.content}</div>
+        <div class="tip-f clearfix">
+            <div class="icon">
+                <img src="images/bpic_1.gif" alt=""/>
+            </div> <div class="name">${obj.name}</div>
+        </div>
+        </div>`;
+
+    }
+    // 添加回父元素里面
+    content.innerHTML=html;
+    // 随机位置
+    let tips  = content.getElementsByClassName('tip');
+    // 设置随机位置
+    for(let j=0;j<tips.length;j++){
+        tips[j].style.top = Math.random()*500+'px';
+        tips[j].style.left = Math.random()*900+ 300+'px';
+
+    }
+    let maxIndex = 1;
+     // 3 点击纸条，把该纸条的层级提升到最高
+    for(let k = 0;k<tips.length;k++){
+        tips[k].onclick=function(){
+            maxIndex++;
+            this.style.zIndex = maxIndex;
+        }
+    }
+    // 点击关闭
+    // let closeBtns=document.getElementsByClassName('close');
+    let closeBtns=document.querySelector('.close')
+    for(let x=0;x<closeBtns.length;x++){
+        closeBtns[x].onclick=function(){
+            let tip = tish.parentNode.parentNode;
+            tip.parentNode.randomChild(tip);
+        }
+    }
+    // 双机关闭
+    for(let y = 0;y<tips.length;y++){
+        tips[y].ondblclick=function(){
+    this.parentNode.removeChild(this);
+}
+
+    }
+</script>
+</body>
+</html>
