@@ -12,7 +12,7 @@
 }
 
 /*产品介绍*/
-.product-intro {}
+/* .product-intro {} */
 
 /*放大镜预览模块*/
 .preview-wrap {
@@ -325,6 +325,6 @@
   position: absolute;
   left: 400px;
   top: 0;
-  /* display: none; */
+  display: none;
   z-index: 998;
 }

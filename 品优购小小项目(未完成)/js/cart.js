@@ -91,21 +91,6 @@ $('.item-list').on('click','.item-ck',function(){
     kits.saveData('cartListData',arr);
     calcTotal();
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 // 封装一个计算总价格和总件数的函数，方便每次使用就调用
 function calcTotal(){
     // 第三个功能： 计算总价和总件数

@@ -1,6 +1,7 @@
 $(function () {
   // 先截取 location.search 里面的id
   let id = location.search.substring(4);
+  
   // 到数组里面把对应id的数据获取出来
   // 这样做是可以获取到对应的数据的 —— 但是太麻烦了
   // phoneData.forEach(e=>{
@@ -23,7 +24,8 @@ $(function () {
   // 改图片
   $('.preview-img>img').attr('src', target.imgSrc);
   // 如果还有别的地方要改(数据要支持)，继续修改
-
+  // 点击获取加减
+  
 
   /// ----------------------------
   // 第四天的代码
@@ -34,7 +36,7 @@ $(function () {
     // 判断用户输入的数据的合理性
     // 如果输入的是空的，不是数字，数量小于0 都是不合理的情况
     if (number.trim().length === 0 || isNaN(number) || parseInt(number) <= 0) {
-      alert('商品数量不正确，请正确输入');
+     
       return;
     }
     // 把件数和商品的信息存储到本地数据里面
@@ -64,13 +66,76 @@ $(function () {
         // 件数要从输入框里面获取
         number: number,
         // 保持勾选的状态的属性
-        isChecked : true
-      };
+        isChecked : true,
+       };
       // 把数据放到数组里面，然后存到本地数据里 面
       arr.push(obj);
     }
     kits.saveData('cartListData', arr);
+
     // 最后需要跳转到购物车页面
     location.href = './cart.html'; //js里面的路劲要相对于引用他的html页面来说的
+  });
+
+
+// 实现加号
+  $('.add').on('click',function(){
+    let prev=$(this).prev();
+    let current=prev.val();
+
+   prev.val(++current);
+    if(current>=1){
+      $('.reduce').css("cursor","pointer")
+    }
   })
+// 实现减号
+
+$('.reduce').on('click',function(){
+let next=$(this).siblings('.nub');
+
+let current=next.val();
+
+if(current<=1){
+  $('.reduce').css("cursor","not-allowed")
+
+    return;
+}
+next.val(--current);
+})
+// 给选择颜色注册点击事件
+// 获取元素
+$('.colour').on('click','.select',function(){
+  $(this).addClass('current').siblings().removeClass('current')
+})
+// 选择版本
+$('.versions').on('click','.edition',function(){
+  $(this).addClass('current').siblings().removeClass('current')
+})
+// 选择方式
+$('.way').on('click','.mode',function(){
+  $(this).addClass('current').siblings().removeClass('current')
+})
+// 套餐
+$('.suit').on('click','.discounts',function(){
+  $(this).addClass('current').siblings().removeClass('current')
+})
+// 文本获得焦点的时候
+$('.nub').on('focus',function(){
+  // 获得焦点把原来保存起来
+  let old=$(this).val();
+  $(this).attr('data-old',old);
+  
+})
+// 失去焦点
+$('.nub').on('blur',function(){
+  let current=$(this).val();
+  if(current.trim().length===0||isNaN(current)||parseInt(current)<=0){
+    let old=$(this).attr('data-old');
+   $(this).val(old);
+ 
+   return;
+  }
+
+  
+})
 });

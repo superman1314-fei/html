@@ -419,7 +419,7 @@ button {
 .disabled {
     color: #abcd12;
     /*鼠标禁用*/
-    cursor: not-allowed;
+    /* cursor: not-allowed; */
 }
 
 .mask {
